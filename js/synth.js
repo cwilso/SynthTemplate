@@ -188,7 +188,7 @@ function initAudio() {
 	effectChain = audioContext.createGainNode();
 
 	// convolver for a global reverb - just an example "global effect"
-    revNode = audioContext.createConvolver();
+    revNode = audioContext.createGainNode(); // createConvolver();
 
     // gain for reverb
 	revGain = audioContext.createGainNode();
@@ -211,7 +211,7 @@ function initAudio() {
     volNode.connect( audioContext.destination );
 
     // Synthesize a reverb impulse response (could use XHR to download one).
-	revNode.buffer = impulseResponse( 5.0, 2.0 );
+//	revNode.buffer = impulseResponse( 5.0, 2.0 );
 
 	synthBox = document.getElementById("synthbox");
 
