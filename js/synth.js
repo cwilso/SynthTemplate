@@ -92,6 +92,16 @@ function controller( number, value ) {
 	}
 }
 
+// 'value' is normalized to [-1,1]
+function pitchWheel( value ) {
+	var i;
+	
+	for (i in voices) {
+		if (voices[i] && voices[i].osc)
+			voices[i].osc.detune.value = value * 500;	// value in cents - detune major fifth.
+	}
+}
+
 function Voice( note, velocity ) {
 	this.originalFrequency = frequencyFromNoteNumber( note );
 
