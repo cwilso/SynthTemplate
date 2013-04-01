@@ -54,10 +54,6 @@ function impulseResponse( duration, decay ) {
     return impulse;
 }
 
-function frequencyFromNoteNumber( note ) {
-	return 440 * Math.pow(2,(note-69)/12);
-}
-
 function noteOn( note, velocity ) {
 	if (voices[note] == null) {
 		// Create a new synth node
@@ -102,6 +98,10 @@ function pitchWheel( value ) {
 	}
 }
 
+function frequencyFromNoteNumber( note ) {
+	return 440 * Math.pow(2,(note-69)/12);
+}
+
 function Voice( note, velocity ) {
 	this.originalFrequency = frequencyFromNoteNumber( note );
 
@@ -110,7 +110,7 @@ function Voice( note, velocity ) {
 	this.osc.frequency.setValueAtTime(this.originalFrequency, 0);
 
 	// create the volume envelope
-	this.envelope = audioContext.createGainNode();
+	this.envelope = audioContext.createGain();
 	this.osc.connect( this.envelope );
 	this.envelope.connect( effectChain );
 
@@ -118,12 +118,11 @@ function Voice( note, velocity ) {
 	var now = audioContext.currentTime;
 	var envAttackEnd = now + (currentEnvA/10.0);
 
-	this.envelope.gain.value = 0.0;
 	this.envelope.gain.setValueAtTime( 0.0, now );
 	this.envelope.gain.linearRampToValueAtTime( 1.0, envAttackEnd );
 	this.envelope.gain.setTargetValueAtTime( (currentEnvS/100.0), envAttackEnd, (currentEnvD/100.0)+0.001 );
 
-	this.osc.noteOn(0);
+	this.osc.start(0);
 }
 
 Voice.prototype.noteOff = function() {
@@ -134,7 +133,7 @@ Voice.prototype.noteOff = function() {
 	this.envelope.gain.setValueAtTime( this.envelope.gain.value, now );  // this is necessary because of the linear ramp
 	this.envelope.gain.setTargetValueAtTime(0.0, now, (currentEnvR/100));
 
-	this.osc.noteOff( release );
+	this.osc.stop( release );
 }
 
 var currentOctave = 3;
