@@ -194,20 +194,20 @@ function initAudio() {
 	// set up the master effects chain for all voices to connect to.
 
 	// connection point for all voices
-	effectChain = audioContext.createGainNode();
+	effectChain = audioContext.createGain();
 
 	// convolver for a global reverb - just an example "global effect"
-    revNode = audioContext.createGainNode(); // createConvolver();
+    revNode = audioContext.createGain(); // createConvolver();
 
     // gain for reverb
-	revGain = audioContext.createGainNode();
+	revGain = audioContext.createGain();
 	revGain.gain.value = 0.1;
 
 	// gain for reverb bypass.  Balance between this and the previous = effect mix.
-	revBypassGain = audioContext.createGainNode();
+	revBypassGain = audioContext.createGain();
 
 	// overall volume control node
-    volNode = audioContext.createGainNode();
+    volNode = audioContext.createGain();
     volNode.gain.value = 0.25;
 
     effectChain.connect( revNode );
